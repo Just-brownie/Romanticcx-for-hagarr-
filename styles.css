@@ -149,6 +149,9 @@ body {
     z-index: 10;
     animation: fadeInUp 1s ease;
     padding: 2rem;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes fadeInUp {
@@ -164,7 +167,7 @@ body {
 
 .hero-title {
     font-size: 4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     background: linear-gradient(135deg, #ff1493, #ff69b4, #ffc0cb);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -177,9 +180,37 @@ body {
     50% { filter: drop-shadow(0 0 20px #ff69b4); }
 }
 
+/* Personal Message Styling */
+.personal-message {
+    background: rgba(255, 20, 147, 0.15);
+    border: 2px solid #ff1493;
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem 0;
+    backdrop-filter: blur(10px);
+    text-align: left;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.message-text {
+    font-size: 1rem;
+    color: #ffc0cb;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.message-text.final {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ff69b4;
+    margin-top: 1.5rem;
+}
+
 .hero-subtitle {
     font-size: 1.8rem;
-    margin-bottom: 1rem;
+    margin: 2rem 0 1rem 0;
     color: #ffc0cb;
 }
 
@@ -546,6 +577,16 @@ body {
         padding: 1rem;
     }
 
+    .personal-message {
+        padding: 1.5rem;
+        max-height: 350px;
+        font-size: 0.9rem;
+    }
+
+    .message-text {
+        font-size: 0.9rem;
+    }
+
     .quote-box {
         margin: 1rem auto;
         padding: 1rem;
@@ -613,6 +654,16 @@ body {
 
     .hero-subtitle {
         font-size: 1rem;
+    }
+
+    .personal-message {
+        padding: 1rem;
+        max-height: 300px;
+    }
+
+    .message-text {
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
     }
 
     .romantic-quote {
