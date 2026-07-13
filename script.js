@@ -5,39 +5,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
             target.scrollIntoView({
-                behavior: 'smooth'
+                behavior: 'smooth',
+                block: 'start'
             });
         }
     });
 });
 
-// Terminal typing effect
-const terminalLines = document.querySelectorAll('.terminal-line');
-terminalLines.forEach((line, index) => {
-    line.style.opacity = '0';
-    line.style.animation = `slideUp 0.5s ease-out ${index * 0.2}s forwards`;
-});
-
-// Add CSS animation dynamically
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-`;
-document.head.appendChild(style);
-
 // Scroll animations for cards
 const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+    rootMargin: '0px 0px -50px 0px'
 };
 
 const observer = new IntersectionObserver(function(entries) {
@@ -49,142 +27,149 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Observe all cards
-document.querySelectorAll('.profile-card, .skill-card, .project-card').forEach(el => {
+// Observe all cards for animation
+document.querySelectorAll('.about-card, .love-item, .moment-card').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'all 0.6s ease';
     observer.observe(el);
 });
 
-// Code syntax highlighting on scroll
-const codeBlocks = document.querySelectorAll('code');
-codeBlocks.forEach(block => {
-    block.style.opacity = '0';
-    const observer2 = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeIn 1s ease forwards';
-                observer2.unobserve(entry.target);
-            }
+// Add sparkle effect on card hover (desktop)
+if (window.innerWidth > 768) {
+    document.querySelectorAll('.about-card, .moment-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.filter = 'drop-shadow(0 0 15px rgba(245, 87, 108, 0.5))';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.filter = 'none';
         });
     });
-    observer2.observe(block);
-});
+}
 
-// Add fade in animation
-const fadeInStyle = document.createElement('style');
-fadeInStyle.textContent = `
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-`;
-document.head.appendChild(fadeInStyle);
-
-// Mouse follow effect for glowing gradient
-document.addEventListener('mousemove', (e) => {
-    const cards = document.querySelectorAll('.profile-card, .skill-card, .project-card');
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
-    
-    cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const cardCenterX = rect.left + rect.width / 2;
-        const cardCenterY = rect.top + rect.height / 2;
-        
-        const distX = e.clientX - cardCenterX;
-        const distY = e.clientY - cardCenterY;
-        const distance = Math.sqrt(distX * distX + distY * distY);
-        
-        if (distance < 200) {
-            const angle = Math.atan2(distY, distX);
-            const glow = Math.max(0, 1 - distance / 200);
-            card.style.boxShadow = `
-                0 0 30px rgba(255, 0, 110, ${glow * 0.5}),
-                inset 0 0 30px rgba(131, 56, 236, ${glow * 0.2})
-            `;
-        }
-    });
-});
-
-// Add sparkle effect on hover
-document.querySelectorAll('.skill-card, .profile-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.filter = 'drop-shadow(0 0 20px rgba(255, 0, 110, 0.6))';
+// Mobile touch feedback
+document.querySelectorAll('.love-item').forEach(item => {
+    item.addEventListener('touchstart', function() {
+        this.style.backgroundColor = '#fff0f5';
     });
     
-    card.addEventListener('mouseleave', function() {
-        this.style.filter = 'none';
+    item.addEventListener('touchend', function() {
+        this.style.backgroundColor = 'white';
     });
 });
 
-// Dynamic text color cycling for headings
+// Add pulse animation to emoji on love items
+document.querySelectorAll('.love-emoji').forEach((emoji, index) => {
+    emoji.style.animation = `bounce 2s ease-in-out infinite`;
+    emoji.style.animationDelay = `${index * 0.1}s`;
+});
+
+// Heart animation enhancement
+const hearts = document.querySelectorAll('.heart');
+hearts.forEach((heart, index) => {
+    heart.style.animation = `float 8s ease-in-out infinite`;
+    heart.style.animationDelay = `${index * 1}s`;
+});
+
+// Add dynamic glow to headings
 const headings = document.querySelectorAll('h2');
-headings.forEach((heading, index) => {
-    heading.style.animation = `colorPulse 3s ease-in-out infinite`;
-    heading.style.animationDelay = `${index * 0.5}s`;
+headings.forEach(heading => {
+    heading.style.transition = 'all 0.3s ease';
 });
 
-const colorPulseStyle = document.createElement('style');
-colorPulseStyle.textContent = `
-    @keyframes colorPulse {
-        0%, 100% { text-shadow: 0 0 20px rgba(255, 0, 110, 0.5); }
-        50% { text-shadow: 0 0 30px rgba(131, 56, 236, 0.7); }
-    }
-`;
-document.head.appendChild(colorPulseStyle);
+// Mobile menu optimization
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
-// Add click effect for interactive feedback
-document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const ripple = document.createElement('span');
-        ripple.style.position = 'absolute';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        ripple.style.width = '20px';
-        ripple.style.height = '20px';
-        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-        ripple.style.borderRadius = '50%';
-        ripple.style.pointerEvents = 'none';
-        ripple.style.animation = 'rippleEffect 0.6s ease-out';
-        
-        this.style.position = 'relative';
-        this.style.overflow = 'hidden';
-        this.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        // Small delay to allow scroll to happen
+        setTimeout(() => {
+            // Menu would collapse here if implemented
+        }, 100);
     });
 });
 
-const rippleStyle = document.createElement('style');
-rippleStyle.textContent = `
-    @keyframes rippleEffect {
-        to {
-            width: 200px;
-            height: 200px;
+// Prevent double tap zoom on buttons
+document.querySelectorAll('a, button').forEach(element => {
+    element.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        this.click();
+    }, false);
+});
+
+// Add viewport height adjustment for mobile
+if (window.innerWidth <= 768) {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    
+    window.addEventListener('resize', () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+}
+
+// Animate message content on scroll into view
+const messageContainer = document.querySelector('.message-container');
+if (messageContainer) {
+    const messageObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'slideIn 1s ease-out';
+                messageObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    messageObserver.observe(messageContainer);
+}
+
+// Add CSS animations dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
             opacity: 0;
-            transform: translate(-50%, -50%);
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 100% { 
+            transform: scale(1); 
+        }
+        50% { 
+            transform: scale(1.15); 
         }
     }
 `;
-document.head.appendChild(rippleStyle);
+document.head.appendChild(style);
 
-// Track page scroll for header styling
+// Update navbar on scroll
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(15, 15, 35, 0.98)';
-        navbar.style.boxShadow = '0 4px 15px rgba(255, 0, 110, 0.3)';
+        navbar.style.boxShadow = '0 8px 25px rgba(245, 87, 108, 0.25)';
     } else {
-        navbar.style.background = 'rgba(15, 15, 35, 0.95)';
-        navbar.style.boxShadow = '0 4px 15px rgba(255, 0, 110, 0.2)';
+        navbar.style.boxShadow = '0 4px 15px rgba(245, 87, 108, 0.2)';
     }
 });
 
-console.log('💻❤️ Website loaded for Hager!');
-console.log('You are brilliant, beautiful, and destined for greatness.');
+// Add keyboard navigation support
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const focusedElement = document.activeElement;
+        if (focusedElement && focusedElement.tagName === 'A') {
+            focusedElement.click();
+        }
+    }
+});
+
+// Console message
+console.log('%c💕 Hager, I love you so much! 💕', 'color: #f5576c; font-size: 20px; font-weight: bold;');
+console.log('%cYou are amazing, beautiful, brilliant, and perfect. 💻❤️', 'color: #ff9a56; font-size: 14px;');
