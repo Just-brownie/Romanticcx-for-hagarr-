@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Floating Stars Background -->
+    <div class="floating-stars" id="floatingStars"></div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -21,15 +24,26 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="stars"></div>
         <div class="hero-content">
             <h2 class="hero-title">Celebrate Love</h2>
             <p class="hero-subtitle">Through the magic of romantic cinema</p>
+            <div class="quote-box">
+                <p class="romantic-quote" id="heroQuote">"The greatest thing you'll ever learn is just to love and be loved in return."</p>
+            </div>
             <p class="hero-description">Discover the most beautiful love stories ever told</p>
             <button class="cta-button" onclick="document.getElementById('movies').scrollIntoView({behavior: 'smooth'})">
                 Explore Movies ❤️
             </button>
         </div>
-        <div class="stars"></div>
+    </section>
+
+    <!-- Quotes Section -->
+    <section class="quotes-section">
+        <h2 class="section-title">💕 Words of Love 💕</h2>
+        <div class="quotes-grid" id="quotesGrid">
+            <!-- Quotes will be inserted here by JavaScript -->
+        </div>
     </section>
 
     <!-- Movies Section -->

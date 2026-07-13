@@ -1,3 +1,15 @@
+// Romantic quotes
+const romanticQuotes = [
+    { quote: "Love is not about finding the right person, but about being the right person for someone.", author: "Unknown" },
+    { quote: "In your eyes, I see my forever.", author: "Unknown" },
+    { quote: "Every moment with you feels like a beautiful scene from my favorite movie.", author: "Unknown" },
+    { quote: "You make my heart skip a beat and my soul dance with joy.", author: "Unknown" },
+    { quote: "Love is the most beautiful adventure two souls can share.", author: "Unknown" },
+    { quote: "My heart chose you before my mind could understand why.", author: "Unknown" },
+    { quote: "You are my today and all of my tomorrows.", author: "Unknown" },
+    { quote: "Falling in love with you was the best plot twist of my life.", author: "Unknown" }
+];
+
 // Movie database with romantic films
 const romanticMovies = [
     {
@@ -72,6 +84,33 @@ const romanticMovies = [
     }
 ];
 
+// Create floating stars
+function createFloatingStars() {
+    const floatingStarsContainer = document.getElementById('floatingStars');
+    const numberOfStars = window.innerWidth > 768 ? 50 : 20;
+
+    for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 6 + 's';
+        star.style.animationDuration = (4 + Math.random() * 4) + 's';
+        floatingStarsContainer.appendChild(star);
+    }
+}
+
+// Render quotes
+function renderQuotes() {
+    const quotesGrid = document.getElementById('quotesGrid');
+    quotesGrid.innerHTML = romanticQuotes.map((q, index) => `
+        <div class="quote-card" style="animation: fadeInUp ${0.3 + index * 0.1}s ease;">
+            <p class="quote-text">"${q.quote}"</p>
+            <p class="quote-author">— ${q.author}</p>
+        </div>
+    `).join('');
+}
+
 // Render movies
 function renderMovies() {
     const moviesGrid = document.getElementById('moviesGrid');
@@ -86,6 +125,21 @@ function renderMovies() {
             </div>
         </div>
     `).join('');
+}
+
+// Rotate hero quote
+function rotateHeroQuote() {
+    const heroQuote = document.getElementById('heroQuote');
+    let currentIndex = 0;
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % romanticQuotes.length;
+        heroQuote.style.opacity = '0';
+        setTimeout(() => {
+            heroQuote.textContent = `"${romanticQuotes[currentIndex].quote}"` + (romanticQuotes[currentIndex].author !== 'Unknown' ? ` - ${romanticQuotes[currentIndex].author}` : '');
+            heroQuote.style.opacity = '1';
+        }, 300);
+    }, 6000);
 }
 
 // Handle form submission
@@ -130,20 +184,23 @@ function displayMessages() {
         return;
     }
     
-    messagesDisplay.innerHTML = '<h3 style="color: #ff69b4; margin-bottom: 1rem;">💭 Messages</h3>' + 
+    messagesDisplay.innerHTML = '<h3 style="color: #ff69b4; margin-bottom: 1rem; font-size: 1.1rem;">💭 Messages</h3>' + 
         messages.map(msg => `
             <div class="message-item">
                 <div class="message-item-name">💕 ${msg.name}</div>
                 <div class="message-item-text">"${msg.message}"</div>
-                <div style="font-size: 0.8rem; color: #808080; margin-top: 0.5rem;">${msg.timestamp}</div>
+                <div style="font-size: 0.75rem; color: #808080; margin-top: 0.3rem;">${msg.timestamp}</div>
             </div>
         `).reverse().join('');
 }
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    createFloatingStars();
+    renderQuotes();
     renderMovies();
     displayMessages();
+    rotateHeroQuote();
     
     // Add smooth scroll behavior
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -164,4 +221,15 @@ window.addEventListener('scroll', function() {
     const hero = document.querySelector('.hero');
     const scrollPosition = window.pageYOffset;
     hero.style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+});
+
+// Handle window resize for floating stars
+let resizeTimer;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+        const floatingStarsContainer = document.getElementById('floatingStars');
+        floatingStarsContainer.innerHTML = '';
+        createFloatingStars();
+    }, 250);
 });
