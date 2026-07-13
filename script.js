@@ -39,7 +39,7 @@ document.querySelectorAll('.about-card, .love-item, .moment-card').forEach(el =>
 if (window.innerWidth > 768) {
     document.querySelectorAll('.about-card, .moment-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
-            this.style.filter = 'drop-shadow(0 0 15px rgba(245, 87, 108, 0.5))';
+            this.style.filter = 'drop-shadow(0 0 20px rgba(255, 22, 84, 0.7))';
         });
         
         card.addEventListener('mouseleave', function() {
@@ -51,11 +51,11 @@ if (window.innerWidth > 768) {
 // Mobile touch feedback
 document.querySelectorAll('.love-item').forEach(item => {
     item.addEventListener('touchstart', function() {
-        this.style.backgroundColor = '#fff0f5';
+        this.style.backgroundColor = 'rgba(255, 22, 84, 0.2)';
     });
     
     item.addEventListener('touchend', function() {
-        this.style.backgroundColor = 'white';
+        this.style.backgroundColor = 'rgba(255, 22, 84, 0.15)';
     });
 });
 
@@ -84,7 +84,6 @@ const navLinks = document.querySelectorAll('.nav-link');
 
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        // Small delay to allow scroll to happen
         setTimeout(() => {
             // Menu would collapse here if implemented
         }, 100);
@@ -154,9 +153,9 @@ document.head.appendChild(style);
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
-        navbar.style.boxShadow = '0 8px 25px rgba(245, 87, 108, 0.25)';
+        navbar.style.boxShadow = '0 8px 25px rgba(255, 22, 84, 0.35)';
     } else {
-        navbar.style.boxShadow = '0 4px 15px rgba(245, 87, 108, 0.2)';
+        navbar.style.boxShadow = '0 4px 15px rgba(255, 22, 84, 0.3)';
     }
 });
 
@@ -170,6 +169,33 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// Animate background shapes on load
+const shapes = document.querySelectorAll('.animated-shape');
+shapes.forEach((shape, index) => {
+    shape.style.opacity = '0.3';
+    shape.style.animation = `rotate ${20 + index * 5}s linear infinite ${index % 2 === 0 ? '' : 'reverse'}`;
+});
+
+// Add random floating animation to bubbles
+const bubbles = document.querySelectorAll('.bubble');
+bubbles.forEach((bubble, index) => {
+    const duration = 8 + Math.random() * 8;
+    bubble.style.animation = `float ${duration}s ease-in-out infinite`;
+    bubble.style.animationDelay = `${index * 1.5}s`;
+});
+
+// Parallax effect on scroll (subtle)
+window.addEventListener('scroll', () => {
+    const shapes = document.querySelectorAll('.animated-shape');
+    const scrolled = window.pageYOffset;
+    
+    shapes.forEach((shape, index) => {
+        const yOffset = scrolled * (0.1 + index * 0.05);
+        shape.style.transform = `translateY(${yOffset}px)`;
+    });
+});
+
 // Console message
-console.log('%c💕 Hager, I love you so much! 💕', 'color: #f5576c; font-size: 20px; font-weight: bold;');
-console.log('%cYou are amazing, beautiful, brilliant, and perfect. 💻❤️', 'color: #ff9a56; font-size: 14px;');
+console.log('%c💕 Hager, I love you so much! 💕', 'color: #ff1654; font-size: 20px; font-weight: bold;');
+console.log('%cYou are amazing, beautiful, brilliant, and perfect. 💻❤️', 'color: #ff006e; font-size: 14px;');
+console.log('%cThis website is made just for you with all my love ❤️', 'color: #00ffff; font-size: 14px;');
